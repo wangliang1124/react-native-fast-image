@@ -167,7 +167,17 @@ function FastImageBase({
         )
     }
 
-    const resolvedSource = Image.resolveAssetSource(source as any)
+    const { uri } = source as any;
+    let safeSource = source
+
+    if (typeof uri === 'string' && !(uri.startsWith('http://')||uri.startsWith('https://'))) {
+        safeSource = {
+        ...source as any,
+        uri: '',
+      };
+    }
+
+    const resolvedSource = Image.resolveAssetSource(safeSource as any)
 
     return (
         <View style={[styles.imageContainer, style]} ref={forwardedRef}>
